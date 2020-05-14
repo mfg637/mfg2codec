@@ -42,8 +42,11 @@ public class MFG2Codec implements BytesCodec {
             for (int i=0; i<block_size; i++){
                 encoded[enc_size+i] = (byte) (reversed[enc_size+i] ^ hash[i]);
             }
+            if (enc_size==0)
+                md.reset();
+            md.update(Arrays.copyOfRange(reversed, enc_size, enc_size+block_size));
+            hash = md.digest();
             enc_size += block_size;
-            hash = md.digest(Arrays.copyOf(reversed, enc_size));
         }
         return encoded;
     }
@@ -59,8 +62,11 @@ public class MFG2Codec implements BytesCodec {
             for (int i=0; i<block_size; i++){
                 reversed[dec_size+i] = (byte) (code[dec_size+i] ^ hash[i]);
             }
+            if (dec_size==0)
+                md.reset();
+            md.update(Arrays.copyOfRange(reversed, dec_size, dec_size+block_size));
+            hash = md.digest();
             dec_size += block_size;
-            hash = md.digest(Arrays.copyOf(reversed, dec_size));
         }
         return reverse(reversed);
     }
