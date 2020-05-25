@@ -31,7 +31,7 @@ public class MFG2Codec implements BytesCodec {
         this.password = md.digest(password);
     }
     @Override
-    public byte[] encode(byte[] data) {
+    public byte[] encode(byte[] data) throws CloneNotSupportedException {
         byte[] hash = password.clone();
         int length = data.length;
         byte[] reversed = this.reverse(data);
@@ -45,14 +45,15 @@ public class MFG2Codec implements BytesCodec {
             if (enc_size==0)
                 md.reset();
             md.update(Arrays.copyOfRange(reversed, enc_size, enc_size+block_size));
-            hash = md.digest();
+            MessageDigest md_copy = (MessageDigest) md.clone();
+            hash = md_copy.digest();
             enc_size += block_size;
         }
         return encoded;
     }
 
     @Override
-    public byte[] decode(byte[] code) {
+    public byte[] decode(byte[] code) throws CloneNotSupportedException {
         byte[] hash = password.clone();
         int length = code.length;
         byte[] reversed = new byte[length];
@@ -65,7 +66,8 @@ public class MFG2Codec implements BytesCodec {
             if (dec_size==0)
                 md.reset();
             md.update(Arrays.copyOfRange(reversed, dec_size, dec_size+block_size));
-            hash = md.digest();
+            MessageDigest md_copy = (MessageDigest) md.clone();
+            hash = md_copy.digest();
             dec_size += block_size;
         }
         return reverse(reversed);

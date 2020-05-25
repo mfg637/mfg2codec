@@ -52,7 +52,7 @@ public class Main {
                 case ENCODE:
                     try {
                         output = mfg2.encode(System.in.readAllBytes());
-                    } catch (DigestException | IOException e) {
+                    } catch (DigestException | IOException | CloneNotSupportedException e) {
                         e.printStackTrace();
                         return;
                     }
@@ -66,7 +66,7 @@ public class Main {
                 case DECODE:
                     try {
                         output = mfg2.decode(System.in.readAllBytes());
-                    } catch (IOException e) {
+                    } catch (IOException | CloneNotSupportedException e) {
                         e.printStackTrace();
                         return;
                     }
@@ -80,7 +80,7 @@ public class Main {
                 case FASTENCODE:
                     try {
                         output = mfg2fast.encode(System.in.readAllBytes());
-                    } catch (DigestException | IOException e) {
+                    } catch (DigestException | IOException | CloneNotSupportedException e) {
                         e.printStackTrace();
                         return;
                     }
@@ -94,7 +94,7 @@ public class Main {
                 case FASTDECODE:
                     try {
                         output = mfg2fast.decode(System.in.readAllBytes());
-                    } catch (IOException e) {
+                    } catch (IOException | CloneNotSupportedException e) {
                         e.printStackTrace();
                         return;
                     }
