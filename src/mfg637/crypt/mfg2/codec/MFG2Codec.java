@@ -1,35 +1,19 @@
 package mfg637.crypt.mfg2.codec;
 
 import mfg637.codec.BytesCodec;
-import mfg637.codec.Codec;
 
-import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static java.lang.Integer.min;
 
-public class MFG2Codec implements BytesCodec {
-    protected byte[] password;
-    protected MessageDigest md;
-    protected byte[] reverse(byte[] data){
-        int length = data.length;
-        byte[] reversed = new byte[length];
-        int rev_len = length / 2;
-        for (int i=0; i<rev_len; i++){
-            reversed[i] = data[length - i - 1];
-            reversed[length - i - 1] = data[i];
-        }
-        if (length%2==1){
-            reversed[rev_len] = data[rev_len];
-        }
-        return reversed;
-    }
+public class MFG2Codec extends MFG2ABC implements BytesCodec {
+
     public MFG2Codec(byte[] password) throws NoSuchAlgorithmException {
-        md = MessageDigest.getInstance("SHA-512");
-        this.password = md.digest(password);
+        super(password);
     }
+
     @Override
     public byte[] encode(byte[] data) throws CloneNotSupportedException {
         byte[] hash = password.clone();
